@@ -1,13 +1,13 @@
 import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { Container, Table } from 'react-bootstrap';
+import { Container, Spinner, Table } from 'react-bootstrap';
 import { db } from '../../../config/firestore';
 
 import './lista-reservaciones.css';
 
 export default function ListaReservaciones() {
-  const [ reservas, setReservas ] = useState( [ {} ] )
-  
+  const [ reservas, setReservas ] = useState( [] )
+  const [ loadingData, setLoadingData ] = useState( true )
   useEffect( () => {
     const obtenerReservaciones = async () => {
       const reservasCollectionRef = collection( db, "Reservas" )
@@ -17,7 +17,7 @@ export default function ListaReservaciones() {
         return { id: doc.id, ...doc.data() }
       } )
       setReservas( reservas )
-
+      setLoadingData( false )
     }
     try {
       obtenerReservaciones()
@@ -28,6 +28,11 @@ export default function ListaReservaciones() {
   return (
     <Container>
       <p>A continuación, podrá ver el listado de reservaciones realizadas</p>
+      {
+        loadingData ? (
+          <Spinner animation="border" role="status">
+          </Spinner>
+        ) : (
       <Table striped bordered hover variant="dark">
         <thead>
           <tr>
@@ -35,28 +40,31 @@ export default function ListaReservaciones() {
             <th>Tipo de mesa</th>
             <th>Fecha reservada</th>
             <th>Hora</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            reservas.length === 0 ?
-              (
-                <tr>
-                  <td colSpan={ 4 }>No hay reservaciones</td>
-                </tr>
-              )
-              :
-              reservas.map( reservacion => (
-                <tr key={ reservacion.id }>
-                  <td>{ reservacion.nombreCliente }</td>
-                  <td>{ reservacion.tipoMesa }</td>
-                  <td>{ reservacion.fechaReserva }</td>
-                  <td>{ reservacion.horaReserva }</td>
-                </tr>
-              ) )
-          }
-        </tbody>
-      </Table>
-    </Container>
+                </tr >
+              </thead >
+              <tbody>
+                {
+                  reservas.length === 0 ?
+                    (
+                      <tr>
+                        <td colSpan={ 4 }>No hay reservaciones</td>
+                      </tr>
+                    )
+                    :
+                    reservas.map( reservacion => (
+                      <tr key={ reservacion.id }>
+                        <td>{ reservacion.nombreCliente }</td>
+                        <td>{ reservacion.tipoMesa }</td>
+                        <td>{ reservacion.fechaReserva }</td>
+                        <td>{ reservacion.horaReserva }</td>
+                      </tr>
+                    ) )
+                }
+              </tbody>
+          </Table >
+
+        )
+      }
+    </Container >
   )
 }

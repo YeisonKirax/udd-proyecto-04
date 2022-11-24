@@ -9,7 +9,7 @@ export default function Reservas() {
 
   return (
     <Tabs defaultActiveKey={ "reservaciones" } id="reservaciones-tabs" fill={ true }>
-      <Tab eventKey={ "reservaciones" } title="Reservaciones">
+      <Tab eventKey={ "reservaciones" } title="Reservaciones" mountOnEnter={ true } unmountOnExit={ true }>
         <ListaReservaciones></ListaReservaciones>
       </Tab>
       <Tab title="Reservar hora" eventKey={ "reservar" }>
