@@ -12,7 +12,7 @@ export default function NavbarCustom() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav"></Navbar.Toggle>
         <Navbar.Collapse id='basic-navbar-nav'>
-          <Nav className="me-auto">
+          <Nav>
             <Nav.Link href='/about-us'>Nosotros</Nav.Link>
             <Nav.Link href='/menu'>Menú</Nav.Link>
             <Nav.Link href='/reservations'>Reservaciones</Nav.Link>
